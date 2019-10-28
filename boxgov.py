@@ -4,7 +4,7 @@ class BoxGovernance(Piece):
     def __init__(self,row,column):
         Piece.__init__(self,row,column)
     
-    def possibleMoves(self,board): 
+    def possibleMoves(self): 
         rightDiagonal = []
         leftDiagonal = []
         i = 0
@@ -21,6 +21,6 @@ class BoxGovernance(Piece):
             i += 1
             j += 1
 
-        return list(filter(lambda m: m[0] >= 0 and m[1] < 5 and board[m[0]][m[1]] == None,leftDiagonal + rightDiagonal))
+        return list(filter(lambda m: m[0] >= 0 and m[1] < 5,leftDiagonal + rightDiagonal))
     
     
