@@ -5,7 +5,8 @@ class Board:
     """
     Class that represents the BoxShogi board
     """
-
+    PROMOTION_R1 = 0
+    PROMOTION_R2 = 4
     # The BoxShogi board is 5x5
     BOARD_SIZE = 5
 
@@ -14,8 +15,8 @@ class Board:
 
     def _initEmptyBoard(self):
         # TODO: Initalize empty board
-        pass
-
+        return [[None]*5 for _ in range(Board.BOARD_SIZE)]
+    
     def __repr__(self):
         return self._stringifyBoard()
 
