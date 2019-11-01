@@ -1,60 +1,41 @@
 from piece import Piece 
+from utils import BOARD_SIZE
+
+# Checklist
+# possible move works
 
 class BoxNote(Piece):
     def __init__(self,row,column,player):
         Piece.__init__(self,row,column,player)
     
-    #TODO 
-    # FIX, right now allows jumping over
-
-    # def possibleMoves(self,board): # O(1)
-    #     rowMoves = []
-    #     for i in range(5):
-    #         print(i,self.position[1])
-    #         if board[(i,self.position[1])] != None:
-    #             break
-    #         rowMoves.append([i,self.position[1]])
-        
-    #     columnMoves = []
-    #     for i in range(5):
-    #         if board[(self.position[0],i)] != None:
-    #             break
-    #         columnMoves.append([self.position[0],i])
-
-
-    #     #rowMoves = [[i,self.position[1]] for i in range(5)]
-    #     #columnMoves = [[self.position[0],i] for i in range(5)]
-
-    #     rowMoves = []
-    #     columnMoves = []
-
-    #     return list(filter(lambda m: m[0] >= 0 and m[1] < 5,rowMoves + columnMoves))
-    
     def possibleMoves(self,board): # O(1)
-        rowMoves = []
-        # go from position to left border
-        for i in range(self.position[1]-1,-1,-1):
-            if board[(self.position[0],i)] != None:
-                break
-            rowMoves.append([self.position[0],i])
+        moves = []
+        x,y = self.position
 
-        # go from position to right border until object is detected
-        for i in range(self.position[1]+1,5):
-            if board[(self.position[0],i)] != None:
-                break 
-            rowMoves.append([self.position[0],i])
+        # right of box note (row + 0, col + 1)
+        i = 1
+        while (y+i) < BOARD_SIZE and board[(x,y+i)] == None:
+            moves.append([x,y+i])
+            i += 1
+
+        # left of box note (row + 0, col - 1)
+        i = -1
+        while (y+i) >= 0 and board[(x,y+i)] == None:
+            moves.append([x,y+i])
+            i -= 1
         
-        columnMoves = []
-
-        # go from position to top border until object is detected
-        for j in range(self.position[0]-1,-1,-1):
-            if board[(j,self.position[1])] != None:
-                break
-            columnMoves.append([j,self.position[1]])
+        i = 1
+        # up of box note (row + 1, col)
+        while (x+i) < BOARD_SIZE and board[(x+i,y)] == None:
+            moves.append([x+i,y])
+            i += 1
         
-        for j in range(self.position[0]+1,5):
-            if board[(j,self.position[1])] != None:
-                break
-            columnMoves.append([j,self.position[1]])
+        # down of box note (row - 1, col)
+        i = -1
+        while (x + i) >= 0 and board[(x+i,y)] == None:
+            moves.append([x+i,y])
+            i -= 1
+        print(moves)
+        return moves
 
-        return list(filter(lambda m: m[0] >= 0 and m[1] < 5,rowMoves + columnMoves))
+
