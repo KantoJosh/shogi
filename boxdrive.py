@@ -26,10 +26,3 @@ class BoxDrive(Piece):
         return list(filter(lambda m: 0 <= m[0] < BOARD_SIZE and 0 <= m[1] < BOARD_SIZE and 
             (board[(m[0],m[1])] == None or board[(m[0],m[1])].player != self.player),
             moves))
-        # possibleMoves = []
-        # for move in moves:
-        #     if 0 <= move[0] < BOARD_SIZE and 0 <= move[1] < BOARD_SIZE:
-        #         if board[(move[0],move[1])] == None or board[(move[0],move[1])].player != self.player: 
-        #             possibleMoves.append([move[0],move[1]])
-        # print(possibleMoves)
-        # return possibleMoves

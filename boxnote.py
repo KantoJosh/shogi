@@ -35,7 +35,6 @@ class BoxNote(Piece):
         while (x + i) >= 0 and board[(x+i,y)] == None:
             moves.append([x+i,y])
             i -= 1
-        print(moves)
         return moves
 
 

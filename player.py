@@ -36,7 +36,6 @@ class Player():
             raise ValueError("Cannot move piece that isn't yours")
 
         if [destination[0],destination[1]] not in board[(source[0],source[1])].possibleMoves(board):
-            print([destination[0],destination[1]])
             raise ValueError("Invalid move")
 
         if board[(destination[0],destination[1])] != None and self.id == captured_piece.player:
@@ -48,4 +47,5 @@ class Player():
         self.moves += 1
         if captured_piece != None:
             self.capture(captured_piece)
+            # reduce number of pieces other user has
     

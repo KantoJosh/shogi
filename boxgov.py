@@ -35,5 +35,4 @@ class BoxGovernance(Piece):
         while (x + i >= 0 and y + i >= 0 and board[(x+i,y+i)] == None):
             moves.append([x+i,y+i])
             i -= 1
-        print("BOXGOV",moves)
         return moves

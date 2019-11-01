@@ -39,7 +39,7 @@ def translate_square_coord(coordinate):
     }
     column = letter_map[letter]
     row = abs(int(coordinate[1]) - 1)
-
+    print(coordinate,row,column)
     return (row,column)
 
 
