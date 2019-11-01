@@ -23,6 +23,6 @@ class BoxShield(Piece):
         
         x = list(filter(lambda m: BOARD_SIZE > m[0] >= 0 and 0 <= m[1] < BOARD_SIZE and 
         (board[(m[0],m[1])] == None or board[(m[0],m[1])].player != self.player),moves))
-        print(x)
+        #print(x)
         return x
     

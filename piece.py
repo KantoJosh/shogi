@@ -1,3 +1,4 @@
+from utils import LOWER,UPPER
 class Piece:
     """
     Class that represents a BoxShogi piece
@@ -5,12 +6,12 @@ class Piece:
     # what do all pieces have in common
     # -location
     PIECE_MAP = {
-        "BoxDrive": "d",
-        "BoxGovernance": "g",
-        "BoxNote": "n",
-        "BoxShield": "s",
-        "BoxRelay": "r",
-        "BoxPreview": "p",
+        "BoxDrive": ["d","D"],
+        "BoxGovernance": ["g","G"],
+        "BoxNote": ["n","N"],
+        "BoxShield": ["s","S"],
+        "BoxRelay": ["r","R"],
+        "BoxPreview": ["p","P"],
     }
 
     def __init__(self,row,column,player):
@@ -26,14 +27,26 @@ class Piece:
         return self._position
 
     def __repr__(self):
-        char = self.PIECE_MAP[type(self).__name__]
-        return f"{char.lower() if self.player == 0 else char.upper()}"
+        char = self.PIECE_MAP[type(self).__name__][self.player]
+        return f"{char}"
+    
+    @staticmethod
+    def getChar(piece):
+        if piece == None:
+            return ""
+        return Piece.PIECE_MAP[type(piece).__name__][piece.player]
+
+    def switchPlayers(self):
+        self.player = UPPER if self.player == LOWER else LOWER
+        
 
     def move(self,source,destination,board):
-        if board[(source[0],source[1])] == None:
+        s_x,s_y = source
+        d_x,d_y = destination
+        if board[(s_x,s_y)] == None:
             raise ValueError("Cannot move empty square")
-        captured_piece = board[(destination[0],destination[1])]
-        board[(destination[0],destination[1])] = board[(source[0],source[1])]
-        board[(source[0],source[1])] = None
+        captured_piece = board[(d_x,d_y)]
+        board[(d_x,d_y)] = board[(s_x,s_y)]
+        board[(s_x,s_y)] = None
         #self.setposition(destination)
         return captured_piece

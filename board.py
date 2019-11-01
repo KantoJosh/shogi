@@ -32,11 +32,10 @@ class Board:
     def __repr__(self):
         return self._stringifyBoard()
 
-    def getPieceChar(self,piece):
-        if piece == None:
-            return ""
-        p = Piece.PIECE_MAP[type(piece).__name__]
-        return p.lower() if piece.player == 0 else p.upper()
+    # def getPieceChar(self,piece):
+    #     if piece == None:
+    #         return ""
+    #     return Piece.PIECE_MAP[type(piece).__name__][piece.player]
 
     def _stringifyBoard(self):
         """
@@ -47,7 +46,7 @@ class Board:
 
             s += '' + str(row + 1) + ' |'
             for col in range(0, len(self._board[row])):
-                s += self._stringifySquare(self.getPieceChar(self._board[row][col]))
+                s += self._stringifySquare(Piece.getChar(self._board[row][col]))
 
             s += os.linesep
 
