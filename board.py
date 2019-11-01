@@ -1,6 +1,11 @@
 import os
-
-
+from piece import Piece
+from boxgov import BoxGovernance
+from boxdrive import BoxDrive
+from boxnote import BoxNote
+from boxpreview import BoxPreview
+from boxrelay import BoxRelay
+from boxshield import BoxShield
 class Board:
     """
     Class that represents the BoxShogi board
@@ -11,14 +16,27 @@ class Board:
     BOARD_SIZE = 5
 
     def __init__(self):
-        self._board = self._initEmptyBoard()
+        self._board = self._initEmptyBoard() # backend representation of board
 
     def _initEmptyBoard(self):
         # TODO: Initalize empty board
         return [[None]*5 for _ in range(Board.BOARD_SIZE)]
     
+    def _initStartBoard(self):
+        self._board[4] = [BoxNote(4,0,1),BoxGovernance(4,1,1),BoxRelay(4,2,1),BoxShield(4,3,1),BoxDrive(4,4,1)]
+        self._board[0] = [BoxDrive(0,0,0),BoxShield(0,1,0),BoxRelay(0,2,0),BoxGovernance(0,3,0),BoxNote(0,4,0)]
+        self._board[1][0] = BoxPreview(1,0,0)
+        self._board[3][4] = BoxPreview(3,4,1)
+        
+
     def __repr__(self):
         return self._stringifyBoard()
+
+    def getPieceChar(self,piece):
+        if piece == None:
+            return ""
+        p = Piece.PIECE_MAP[type(piece).__name__]
+        return p.lower() if piece.player == 0 else p.upper()
 
     def _stringifyBoard(self):
         """
@@ -29,12 +47,19 @@ class Board:
 
             s += '' + str(row + 1) + ' |'
             for col in range(0, len(self._board[row])):
-                s += self._stringifySquare(self._board[col][row])
+                s += self._stringifySquare(self.getPieceChar(self._board[row][col]))
 
             s += os.linesep
 
         s += '    a  b  c  d  e' + os.linesep
         return s
+
+    def __getitem__(self,coord):
+        return self._board[coord[0]][coord[1]]
+    
+    def __setitem__(self,coord,piece):
+        self._board[coord[0]][coord[1]] = piece
+
 
     def _stringifySquare(self, sq):
         """
@@ -48,5 +73,7 @@ class Board:
             return '__|'
         if len(sq) == 1:
             return ' ' + sq + '|'
-        if len(sq) == 2:
+        if len(sq) == 2: # promoted
             return sq + '|'
+    
+

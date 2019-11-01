@@ -1,3 +1,6 @@
+LOWER = 0
+UPPER = 1
+BOARD_SIZE = 5
 def parseTestCase(path):
     """
     Utility function to help parse test cases.
@@ -22,3 +25,36 @@ def parseTestCase(path):
         line = f.readline()
 
     return dict(initialPieces=initialBoardState, upperCaptures=upperCaptures, lowerCaptures=lowerCaptures, moves=moves)
+
+
+
+def translate_square_coord(coordinate):
+    letter = coordinate[0]
+    letter_map = {
+        "a" : 0,
+        "b" : 1,
+        "c" : 2,
+        "d" : 3,
+        "e" : 4
+    }
+    column = letter_map[letter]
+    row = abs(int(coordinate[1]) - 1)
+
+    return (row,column)
+
+
+if __name__ == "__main__":
+    # test translate_square_coord
+    test1 = translate_square_coord("a2")
+    assert(translate_square_coord("a2") == (1,0))
+    assert(translate_square_coord("b4") == (3,1))
+    assert(translate_square_coord("e5") == (4,4))
+
+
+
+# 5 | N| G| R| S| D|
+# 4 |__|__|__|__| P|
+# 3 |__|__|__|__|__|
+# 2 | p|__|__|__|__|
+# 1 | d| s| r| g| n|
+#     a  b  c  d  e
