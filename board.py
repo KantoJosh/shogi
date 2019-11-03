@@ -1,4 +1,5 @@
 import os
+from utils import BOARD_SIZE
 from piece import Piece
 from boxgov import BoxGovernance
 from boxdrive import BoxDrive
@@ -10,11 +11,8 @@ class Board:
     """
     Class that represents the BoxShogi board
     """
-    PROMOTION_R1 = 0
-    PROMOTION_R2 = 4
     # The BoxShogi board is 5x5
     BOARD_SIZE = 5
-
     def __init__(self):
         self._board = self._initEmptyBoard() # backend representation of board
 
@@ -27,7 +25,9 @@ class Board:
         self._board[0] = [BoxDrive(0,0,0),BoxShield(0,1,0),BoxRelay(0,2,0),BoxGovernance(0,3,0),BoxNote(0,4,0)]
         self._board[1][0] = BoxPreview(1,0,0)
         self._board[3][4] = BoxPreview(3,4,1)
-        
+    
+    def isEmpty(self,coordinate):
+        return self[(coordinate[0],coordinate[1])] == None
 
     def __repr__(self):
         return self._stringifyBoard()

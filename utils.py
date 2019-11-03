@@ -1,6 +1,7 @@
 LOWER = 0
 UPPER = 1
 BOARD_SIZE = 5
+
 def parseTestCase(path):
     """
     Utility function to help parse test cases.
@@ -39,7 +40,6 @@ def translate_square_coord(coordinate):
     }
     column = letter_map[letter]
     row = abs(int(coordinate[1]) - 1)
-    print(coordinate,row,column)
     return (row,column)
 
 

@@ -10,7 +10,7 @@ def main():
     players = [Player(),Player()] # 0 is lower, 1 is upper
     board = Board() # backend board
     board._initStartBoard()
-    turn = 0
+    turn = LOWER
     while(not GAME_OVER):
 
         # print board state
@@ -46,7 +46,7 @@ def main():
 
 
         turn ^= 1 
-        if players[0].moves == MOVE_LIMIT and players[1].moves == MOVE_LIMIT:
+        if players[LOWER].moves == MOVE_LIMIT and players[UPPER].moves == MOVE_LIMIT:
             GAME_OVER = True
             TIE_GAME = True 
 
