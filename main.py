@@ -25,13 +25,13 @@ def main():
         action_input = input(prompt).split(" ")
         # process input
         if action_input[0] == "move":
-            promote = (len(action_input) == 4 and action[3] == "promote")
+            promote = (len(action_input) == 4 and action_input[3] == "promote")
             _from, _to = action_input[1],action_input[2]
 
             from_coord = translate_square_coord(_from)        
             to_coord = translate_square_coord(_to)
             
-            players[turn].move(from_coord,to_coord,board)
+            players[turn].move(from_coord,to_coord,board,promote)
         elif action_input[0] == "drop":
             piece,to = action_input[1],action_input[2] 
             to_coord = translate_square_coord(to)

@@ -49,7 +49,7 @@ class Player():
         board[destination] = piece 
 
 
-    def move(self,source,destination,board):  
+    def move(self,source,destination,board,promote):  
         """Concerns with player's move: what they neec to do:
         1-move piece
         2- add to capttured set """      
@@ -74,7 +74,7 @@ class Player():
         #board[source].update_position(destination)   # update position of source to destination
         #board[source] = None # mark source spot as empty
 
-        source_piece.move(source,destination,board)
+        source_piece.move(source,destination,board,promote)
         if dest_piece != None:
             # swap side of captured piece
             dest_piece.switchPlayers()

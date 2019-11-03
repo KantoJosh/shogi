@@ -42,12 +42,16 @@ class Piece:
         self.player = UPPER if self.player == LOWER else LOWER
         
 
-    def move(self,source,destination,board):
+    def move(self,source,destination,board,promote):
         dest_piece = board[destination]
         board[destination] = board[source]
         board[source] = None
         self.update_position(destination)
-        if (self.position[0] == BOARD_SIZE - 1 and self.player == LOWER) or (self.position[0] == 0 and self.player == UPPER):
+        dest_row = destination[0]
+        src_row = source[0]
+        print(promote)
+        if promote and ((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
+        ((dest_row == 0 or src_row == 0) and self.player == UPPER):
             self.promote()
 
         # if not self.can_be_promoted and destination[0] == 0 and self.player == UPPER:
