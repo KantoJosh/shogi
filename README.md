@@ -24,3 +24,8 @@ check:
     then 
     iterate through board and see if any pieces map to possible moves of king. remove each move from kings possible 
     moves that is found. if end list is empty, checkmate, end game, else present the remainder of the list is possible moves
+
+
+    in check either in player
+    player will contain var holding king_loc
+    call in check before turn pass in board- iterate thru board, and check if king loc is inside any piece

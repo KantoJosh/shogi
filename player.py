@@ -1,6 +1,6 @@
 from utils import translate_square_coord,LOWER,UPPER
 from piece import Piece
-
+from boxdrive import BoxDrive
 # 
 
 class Player():
@@ -18,6 +18,7 @@ class Player():
         self.id = Player._player_id
         self.moves = 0
         self.in_check = False
+        self.king_loc = None
         Player._player_id += 1
 
     def capture(self,piece):
@@ -89,11 +90,12 @@ class Player():
         if not board.isEmpty(destination) and self.id == dest_piece.player:
             raise ValueError("Cannot move onto your own piece")
 
-        #board[destination] = board[source] # place source piece in destination spot
-        #board[source].update_position(destination)   # update position of source to destination
-        #board[source] = None # mark source spot as empty
+
 
         source_piece.move(source,destination,board,promote)
+        if type(source_piece).__name__ == "BoxDrive":
+            self.king_loc = destination
+
         if dest_piece != None:
             # swap side of captured piece
             dest_piece.switchPlayers()
@@ -101,3 +103,25 @@ class Player():
             # reduce number of pieces other user has
         self.moves += 1
     
+    def check(self,board):
+        for i in range(board.BOARD_SIZE):
+            for j in range(board.BOARD_SIZE):
+                # not empty, enemy player, and possible moves contain self.king_loc
+                if board[(i,j)] != None and board[(i,j)].player != self.id and self.king_loc in type(board[(i,j)]).possibleMoves(board,(i,j)):
+                    return True 
+        return False
+    
+    def findEscapeMoves(self,board):
+        king_moves  = BoxDrive.possibleMoves(board,self.king_loc) # list of tuples
+        for i in range(board.BOARD_SIZE):
+            for j in range(board.BOARD_SIZE):
+                if board[(i,j)] != None and board[(i,j)].player != self.id:
+                    opponent_moves = type(board[(i,j)]).possibleMoves(board,(i,j))
+                    bannedMoves = list(set(king_moves) & set(opponent_moves))
+                    for b in range(len(bannedMoves)):
+                        for k in range(len(king_moves)):
+                            if bannedMoves[b] == king_moves[k]:
+                                king_moves.pop(k)
+                                break
+        return king_moves
+

@@ -46,7 +46,8 @@ class Piece:
         src_row = source[0]
         if promote and ((repr(self) in Piece.PIECE_TO_LETTER["BoxDrive"] or repr(self) in Piece.PIECE_TO_LETTER["BoxShield"])):
             raise ValueError("Cannot promote BoxDrive or BoxShield")
-        if promote and (((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
+        
+        if (promote or type(board[source]).__name__ == "BoxPreview") and (((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
         ((dest_row == 0 or src_row == 0) and self.player == UPPER)):
             self.promote()
         

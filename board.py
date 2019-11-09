@@ -42,6 +42,12 @@ class Board:
             row,col = translate_square_coord(initialPiece['position'])
             player = LOWER if initialPiece['piece'][-1].lower() == initialPiece['piece'][-1] else UPPER
             piece = self.letter_to_piece[initialPiece['piece'][-1].lower()](row,col,player)
+
+            if initialPiece['piece'][-1] in ["d"]:
+                lower.king_loc = (row,col)
+            elif initialPiece['piece'][-1]  in ["D"]:
+                upper.king_loc = (row,col)
+                
             if len(initialPiece['piece']) > 1:
                piece.promote() # piece is promoted
             self._board[row][col] = piece 
@@ -103,4 +109,4 @@ class Board:
         if len(sq) == 2: # promoted
             return sq + '|'
     
-
+    
