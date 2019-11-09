@@ -43,12 +43,10 @@ class Piece:
         
 
     def move(self,source,destination,board,promote):
-        #dest_piece = board[destination]
-        #board[destination] = board[source]
-        #board[source] = None
-        #self.update_position(destination)
         dest_row = destination[0]
         src_row = source[0]
+        if promote and (repr(self) in Piece.PIECE_TO_LETTER["BoxDrive"] or repr(self) in Piece.PIECE_TO_LETTER["BoxShield"]):
+            raise ValueError("Cannot promote BoxDrive or BoxShield")
         if promote and ((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
         ((dest_row == 0 or src_row == 0) and self.player == UPPER):
             self.promote()
@@ -78,5 +76,4 @@ class Piece:
     def promote(self):
         if repr(self) not in Piece.PIECE_TO_LETTER["BoxDrive"] and repr(self) not in Piece.PIECE_TO_LETTER["BoxShield"]:
             self.promoted = True
-        else:
-            raise ValueError("Cannot promote")
+        
