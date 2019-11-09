@@ -22,6 +22,7 @@ class Board:
 
     # The BoxShogi board is 5x5
     BOARD_SIZE = 5
+
     def __init__(self):
         self._board = self._initEmptyBoard() # backend representation of board
         #self.king_loc = None

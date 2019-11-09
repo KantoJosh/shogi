@@ -58,7 +58,7 @@ class Player():
 
         if not board.isEmpty(destination): 
             raise ValueError("Cannot drop piece on another piece")
-        in_promo_zone = (destination[0] == LOWER and self.id == UPPER) or (destination[0] == UPPER and self.id == LOWER) 
+        in_promo_zone = (destination[0] == 0 and self.id == UPPER) or (destination[0] == board.BOARD_SIZE-1 and self.id == LOWER) 
         if pieceChar == "p" and in_promo_zone: 
             raise ValueError("Cannot drop BoxPreview in promotion zone")
         elif pieceChar == "p" and False: # eventually change False to is_in_checkmate (immediate as of moving to destination)
