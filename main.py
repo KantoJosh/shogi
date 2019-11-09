@@ -22,7 +22,7 @@ def main():
 
         # prompt for input 
         prompt = "lower> " if turn == 0 else "UPPER> "
-        action_input = input(prompt).split(" ")
+        action_input = input(f"\n{prompt}").split(" ")
         # process input
         if action_input[0] == "move":
             promote = (len(action_input) == 4 and action_input[3] == "promote")
@@ -30,12 +30,15 @@ def main():
 
             from_coord = translate_square_coord(_from)        
             to_coord = translate_square_coord(_to)
-            
+
             players[turn].move(from_coord,to_coord,board,promote)
+
+            
         elif action_input[0] == "drop":
             piece,to = action_input[1],action_input[2] 
             to_coord = translate_square_coord(to)
             players[turn].drop(piece,board,to_coord)
+            pass
         else:
             raise ValueError("Invalid move format")
 

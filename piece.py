@@ -5,7 +5,7 @@ class Piece:
     """
     # what do all pieces have in common
     # -location
-    PIECE_MAP = {
+    PIECE_TO_LETTER = {
         "BoxDrive": ["d","D"],
         "BoxGovernance": ["g","G"],
         "BoxNote": ["n","N"],
@@ -29,13 +29,13 @@ class Piece:
         return self._position
 
     def __repr__(self):
-        return self.PIECE_MAP[type(self).__name__][self.player]
+        return self.PIECE_TO_LETTER[type(self).__name__][self.player]
     
     @staticmethod
     def getChar(piece):
         if piece == None:
             return ""
-        char = Piece.PIECE_MAP[type(piece).__name__][piece.player]
+        char = Piece.PIECE_TO_LETTER[type(piece).__name__][piece.player]
         return f"+{char}" if piece.promoted else f"{char}"
 
     def switchPlayers(self):
@@ -49,7 +49,6 @@ class Piece:
         self.update_position(destination)
         dest_row = destination[0]
         src_row = source[0]
-        print(promote)
         if promote and ((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
         ((dest_row == 0 or src_row == 0) and self.player == UPPER):
             self.promote()
@@ -67,10 +66,10 @@ class Piece:
         self.promoted = False
     
     # def promote(self):
-    #     if repr(self) in PIECE_MAP["BoxDrive"] or repr(self) in PIECE_MAP["BoxShield"]:
+    #     if repr(self) in PIECE_TO_LETTER["BoxDrive"] or repr(self) in PIECE_TO_LETTER["BoxShield"]:
     #         raise ValueError("Cannot promote Box Drive")
     #     self.promoted = True
     
     def promote(self):
-        if repr(self) not in Piece.PIECE_MAP["BoxDrive"] and repr(self) not in Piece.PIECE_MAP["BoxShield"]:
+        if repr(self) not in Piece.PIECE_TO_LETTER["BoxDrive"] and repr(self) not in Piece.PIECE_TO_LETTER["BoxShield"]:
             self.promoted = True

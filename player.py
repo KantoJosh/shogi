@@ -1,33 +1,44 @@
 from utils import translate_square_coord,LOWER,UPPER
 from piece import Piece
+
+# 
+
 class Player():
     _player_id = 0
     def __init__(self):
-        self._captured = {
-            "d": [],
-            "g": [],
-            "n" : [],
-            "s" : [],
-            "r" : [],
-            "p" : []
-        }
+        self._captured = []
+        # self._captured = {
+        #     "d": [],
+        #     "g": [],
+        #     "n" : [],
+        #     "s" : [],
+        #     "r" : [],
+        #     "p" : []
+        # }
         self.id = Player._player_id
         self.moves = 0
+        self.in_check = False
         Player._player_id += 1
 
     def capture(self,piece):
         if piece == None:
             raise ValueError("Cannot capture empty square")
         piece.demote()
-        self._captured[Piece.getChar(piece).lower()].append(piece)
+        self._captured.append(piece)
+        #self._captured[Piece.getChar(piece).lower()].append(piece)
 
     
     def free(self,key):
-        if key not in self._captured.keys():
+        # if key not in self._captured.keys():
+        #     raise ValueError("Invalid piece was attempted to be dropped")
+        # if len(self._captured[key]) == 0:
+        #     raise ValueError("Can not remove nonexistent piece from captured set")
+        # return self._captured[key].pop() 
+        for p in range(len(self._captured)):
+            if Piece.getChar(self._captured[p]).lower() == key:
+                return self._captured.pop(p)
+        else:
             raise ValueError("Invalid piece was attempted to be dropped")
-        if len(self._captured[key]) == 0:
-            raise ValueError("Can not remove nonexistent piece from captured set")
-        return self._captured[key].pop() 
 
     
     @property
@@ -36,9 +47,17 @@ class Player():
         return self._captured
     
     def drop(self,pieceChar,board,destination):
+        # scan column for box preview
+        x,y = destination
+        if pieceChar == "p" or pieceChar == "P":
+            # check if box preview in same column
+            for row in range(board.BOARD_SIZE):
+                if repr(board[(row,y)]) in ["P","p"]: 
+                    raise ValueError("Cannot drop box preview in same column as another")
+
         if not board.isEmpty(destination): 
             raise ValueError("Cannot drop piece on another piece")
-        in_promo_zone = True if (destination[0] == LOWER and self.id == UPPER) or (destination[0] == UPPER and self.id == LOWER) else False
+        in_promo_zone = (destination[0] == LOWER and self.id == UPPER) or (destination[0] == UPPER and self.id == LOWER) 
         if pieceChar == "p" and in_promo_zone: 
             raise ValueError("Cannot drop BoxPreview in promotion zone")
         elif pieceChar == "p" and False: # eventually change False to is_in_checkmate (immediate as of moving to destination)

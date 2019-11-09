@@ -1,5 +1,5 @@
 import os
-from utils import BOARD_SIZE
+from utils import BOARD_SIZE,LOWER,UPPER,translate_square_coord
 from piece import Piece
 from boxgov import BoxGovernance
 from boxdrive import BoxDrive
@@ -11,6 +11,15 @@ class Board:
     """
     Class that represents the BoxShogi board
     """
+    letter_to_piece = {
+        "d" : BoxDrive,
+        "n" : BoxNote,
+        "g" : BoxGovernance,
+        "s" : BoxShield,
+        "r" : BoxRelay,
+        "p" : BoxPreview,
+    }
+
     # The BoxShogi board is 5x5
     BOARD_SIZE = 5
     def __init__(self):
@@ -21,10 +30,28 @@ class Board:
         return [[None]*5 for _ in range(Board.BOARD_SIZE)]
     
     def _initStartBoard(self):
-        self._board[4] = [BoxNote(4,0,1),BoxGovernance(4,1,1),BoxRelay(4,2,1),BoxShield(4,3,1),BoxDrive(4,4,1)]
-        self._board[0] = [BoxDrive(0,0,0),BoxShield(0,1,0),BoxRelay(0,2,0),BoxGovernance(0,3,0),BoxNote(0,4,0)]
-        self._board[1][0] = BoxPreview(1,0,0)
-        self._board[3][4] = BoxPreview(3,4,1)
+        self._board[4] = [BoxNote(4,0,UPPER),BoxGovernance(4,1,UPPER),BoxRelay(4,2,UPPER),BoxShield(4,3,UPPER),BoxDrive(4,4,UPPER)]
+        self._board[0] = [BoxDrive(0,0,LOWER),BoxShield(0,1,LOWER),BoxRelay(0,2,LOWER),BoxGovernance(0,3,LOWER),BoxNote(0,4,LOWER)]
+        self._board[1][0] = BoxPreview(1,0,LOWER)
+        self._board[3][4] = BoxPreview(3,4,UPPER)
+    
+    def _initBoardFromFile(self,data,lower,upper):
+        # place pieces onto board
+        for initialPiece in data['initialPieces']:
+            row,col = translate_square_coord(initialPiece['position'])
+            player = LOWER if initialPiece['piece'][-1].lower() == initialPiece['piece'][-1] else UPPER
+            piece = self.letter_to_piece[initialPiece['piece'][-1].lower()](row,col,player)
+            if len(initialPiece['piece']) > 1:
+                piece.promote() # piece is promoted
+            self._board[row][col] = piece 
+        
+        for piece in data['upperCaptures']:
+            piece = self.letter_to_piece[piece.lower()](None,None,UPPER)
+            upper.capture(piece)
+
+        for piece in data['lowerCaptures']:
+            piece = self.letter_to_piece[piece.lower()](None,None,LOWER) 
+            lower.capture(piece)
     
     def isEmpty(self,coordinate):
         return self[(coordinate[0],coordinate[1])] == None
@@ -35,7 +62,7 @@ class Board:
     # def getPieceChar(self,piece):
     #     if piece == None:
     #         return ""
-    #     return Piece.PIECE_MAP[type(piece).__name__][piece.player]
+    #     return Piece.PIECE_TO_LETTER[type(piece).__name__][piece.player]
 
     def _stringifyBoard(self):
         """
