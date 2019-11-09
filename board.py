@@ -24,6 +24,7 @@ class Board:
     BOARD_SIZE = 5
     def __init__(self):
         self._board = self._initEmptyBoard() # backend representation of board
+        #self.king_loc = None
 
     def _initEmptyBoard(self):
         # TODO: Initalize empty board

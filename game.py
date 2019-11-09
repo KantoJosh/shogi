@@ -82,13 +82,13 @@ class Game:
 
             else:
                 raise ValueError("Invalid move format")
+            if self.players[LOWER].moves == Game.MOVE_LIMIT and self.players[UPPER].moves == Game.MOVE_LIMIT:
+                GAME_OVER = True
+                TIE_GAME = True 
             if (i+1) >= len(moves):
                 break
             turn ^= 1 
             i += 1
-            if self.players[LOWER].moves == Game.MOVE_LIMIT and self.players[UPPER].moves == Game.MOVE_LIMIT:
-                GAME_OVER = True
-                TIE_GAME = True 
         if turn == LOWER:
             print(f"lower player action: {' '.join(moves[i])}")
         elif turn == UPPER:
@@ -104,7 +104,9 @@ class Game:
         for c in self.players[LOWER].captured:
             print(f"{c}",end = " ")
         print("\n")
-
+        if TIE_GAME:
+            print("Tie game.  Too many moves.")
+            return
         #print(f"Captures lower {self.players[LOWER].captured}")
 
         if turn == LOWER:
