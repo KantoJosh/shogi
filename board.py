@@ -42,7 +42,7 @@ class Board:
             player = LOWER if initialPiece['piece'][-1].lower() == initialPiece['piece'][-1] else UPPER
             piece = self.letter_to_piece[initialPiece['piece'][-1].lower()](row,col,player)
             if len(initialPiece['piece']) > 1:
-                piece.promote() # piece is promoted
+               piece.promote() # piece is promoted
             self._board[row][col] = piece 
         
         for piece in data['upperCaptures']:

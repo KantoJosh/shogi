@@ -19,7 +19,6 @@ class Piece:
         self._position = [row,column]
         self.player = player
         self.promoted = False
-        # self.can_be_promoted = False
     
     def update_position(self,position):
         self._position = position
@@ -45,10 +44,10 @@ class Piece:
     def move(self,source,destination,board,promote):
         dest_row = destination[0]
         src_row = source[0]
-        if promote and (repr(self) in Piece.PIECE_TO_LETTER["BoxDrive"] or repr(self) in Piece.PIECE_TO_LETTER["BoxShield"]):
+        if promote and ((repr(self) in Piece.PIECE_TO_LETTER["BoxDrive"] or repr(self) in Piece.PIECE_TO_LETTER["BoxShield"])):
             raise ValueError("Cannot promote BoxDrive or BoxShield")
-        if promote and ((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
-        ((dest_row == 0 or src_row == 0) and self.player == UPPER):
+        if promote and (((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
+        ((dest_row == 0 or src_row == 0) and self.player == UPPER)):
             self.promote()
         
         dest_piece = board[destination]
@@ -56,22 +55,10 @@ class Piece:
         board[source] = None
         self.update_position(destination)
 
-        # if not self.can_be_promoted and destination[0] == 0 and self.player == UPPER:
-        #     self.can_be_promoted = True
-        # elif not self.can_be_promoted and destination[0] == 4 and self.player == LOWER:
-        #     self.can_be_promoted = True
-
-        # if user passed in promoted flag:
-        #   detect if source or destination are in the promo row
-        #       if it is, mark item as promoted
 
     def demote(self):
         self.promoted = False
     
-    # def promote(self):
-    #     if repr(self) in PIECE_TO_LETTER["BoxDrive"] or repr(self) in PIECE_TO_LETTER["BoxShield"]:
-    #         raise ValueError("Cannot promote Box Drive")
-    #     self.promoted = True
     
     def promote(self):
         if repr(self) not in Piece.PIECE_TO_LETTER["BoxDrive"] and repr(self) not in Piece.PIECE_TO_LETTER["BoxShield"]:

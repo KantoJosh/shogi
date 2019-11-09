@@ -18,7 +18,7 @@ class Game:
                 raise ValueError("Cant use file mode without file path input")
             self.data = parseTestCase(filepath)
             self.board._initBoardFromFile(self.data,self.players[LOWER],self.players[UPPER])
-    
+        
     def boot(self):
         GAME_OVER = False
         TIE_GAME = False
@@ -26,6 +26,7 @@ class Game:
         i = 0
         moves = [x.split(" ") for x in self.data['moves']]
         while(i < len(moves) and not GAME_OVER):
+            #print(repr(self.board))
             if moves[i][0] == "move":
                 promote = (len(moves[i]) == 4 and moves[i][3] == "promote")
                 _from, _to = moves[i][1],moves[i][2]
