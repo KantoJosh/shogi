@@ -41,13 +41,15 @@ class Piece:
         self.player = UPPER if self.player == LOWER else LOWER
         
 
-    def move(self,source,destination,board,promote):
+    def move(self,source,destination,board,user_promote):
         dest_row = destination[0]
         src_row = source[0]
-        if promote and ((repr(self) in Piece.PIECE_TO_LETTER["BoxDrive"] or repr(self) in Piece.PIECE_TO_LETTER["BoxShield"])):
+        if user_promote and ((repr(self) in Piece.PIECE_TO_LETTER["BoxDrive"] or repr(self) in Piece.PIECE_TO_LETTER["BoxShield"])):
             raise ValueError("Cannot promote BoxDrive or BoxShield")
-        
-        if (promote or type(board[source]).__name__ == "BoxPreview") and (((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
+        if user_promote and (self.promoted):
+            raise ValueError("Cannot promote piece that's already promoted")
+
+        if (user_promote or type(board[source]).__name__ == "BoxPreview") and (((dest_row == BOARD_SIZE-1 or src_row == BOARD_SIZE-1) and self.player == LOWER) or \
         ((dest_row == 0 or src_row == 0) and self.player == UPPER)):
             self.promote()
         
