@@ -52,7 +52,7 @@ class Player():
         if pieceChar == "p" or pieceChar == "P":
             # check if box preview in same column
             for row in range(board.BOARD_SIZE):
-                if repr(board[(row,y)]) in ["P","p"]: 
+                if repr(board[(row,y)]) in ["P","p"] and board[(row,y)].player == self.id: 
                     raise ValueError("Cannot drop box preview in same column as another")
 
         if not board.isEmpty(destination): 
