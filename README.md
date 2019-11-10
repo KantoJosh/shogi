@@ -42,3 +42,9 @@ check:
     keep in list
     then undo the move (either by creating a copy of the old board every time, or undoing the move)
  if that list is empty, you're in checkmate
+
+
+ immediatePreviewDropMate ----- prevent box preview from being dropped and causing checkmate:
+ how? -> if piece is box preview, simulate drop at location requested on a copied board and see if opponent is in checkmate: if so, raise error
+ manyWaysOutOfCheck --> simulate every move of each piece on your team. if one of them causes no check, add that as a move to possible moves
+ movingIntoCheck ---- prevent from moving into check by simulating move and seeing if it causes check

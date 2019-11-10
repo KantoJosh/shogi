@@ -60,15 +60,33 @@ class Player():
         if not board.isEmpty(destination): 
             raise ValueError("Cannot drop piece on another piece")
         in_promo_zone = (destination[0] == 0 and self.id == UPPER) or (destination[0] == board.BOARD_SIZE-1 and self.id == LOWER) 
+
+
         if pieceChar == "p" and in_promo_zone: 
             raise ValueError("Cannot drop BoxPreview in promotion zone")
         elif pieceChar == "p" and False: # eventually change False to is_in_checkmate (immediate as of moving to destination)
             pass
 
         piece = self.free(pieceChar)
+
+        # if type(piece).__name__ == "BoxPreview":
+        #     board_copy = deepcopy(board)
+        #     board_copy[destination] = piece
+        #     if self.checkmate(board_copy):
+        #         raise ValueError("P")
+
         piece.update_position(destination)
         board[destination] = piece 
 
+    # def checkmate(self,board):
+    #     king_moves  = set(BoxDrive.possibleMoves(board,self.king_loc)) # list of tuples
+    #     new_moves = set()
+    #     for move in king_moves:
+    #         board_copy = deepcopy(board)
+    #         self.move(self.king_loc,move,board_copy,False,False)
+    #         if not self.check(board_copy,move):
+    #             new_moves.add(move)
+    #     return new_moves
 
     def move(self,source,destination,board,promote,undo_king = True):  
         """Concerns with player's move: what they neec to do:
@@ -91,6 +109,12 @@ class Player():
         if not board.isEmpty(destination) and self.id == dest_piece.player:
             raise ValueError("Cannot move onto your own piece")
 
+        if type(board[source]).__name__ == "BoxDrive":
+            if not self.check(board,source):
+                board_copy = deepcopy(board)
+                source_piece.move(source,destination,board_copy,False)
+                if self.check(board_copy,destination):
+                    raise ValueError("Cannot move into check")
 
 
         source_piece.move(source,destination,board,promote)
@@ -103,7 +127,7 @@ class Player():
             self.capture(dest_piece)
             # reduce number of pieces other user has
         self.moves += 1
-    
+
     def check(self,board,king_pos = None):
         if king_pos == None:
             king_pos = self.king_loc
