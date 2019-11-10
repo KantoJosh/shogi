@@ -48,7 +48,7 @@ class Player():
         """Returns set of Piece objects"""
         return self._captured
     
-    def drop(self,pieceChar,board,destination):
+    def drop(self,pieceChar,board,destination,opponent):
         # scan column for box preview
         x,y = destination
         if pieceChar == "p" or pieceChar == "P":
@@ -67,14 +67,16 @@ class Player():
         elif pieceChar == "p" and False: # eventually change False to is_in_checkmate (immediate as of moving to destination)
             pass
 
+        piece = self._captured[0]
+
+        if type(piece).__name__ == "BoxPreview":
+            board_copy = deepcopy(board)
+            board_copy[destination] = piece
+            opponent_copy = deepcopy(opponent)
+            if len(opponent_copy.checkmate(board_copy)) == 0: 
+                raise ValueError("Cannot drop Box Preview to cause immediate checkmate")
+
         piece = self.free(pieceChar)
-
-        # if type(piece).__name__ == "BoxPreview":
-        #     board_copy = deepcopy(board)
-        #     board_copy[destination] = piece
-        #     if self.checkmate(board_copy):
-        #         raise ValueError("P")
-
         piece.update_position(destination)
         board[destination] = piece 
 

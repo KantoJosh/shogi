@@ -67,7 +67,7 @@ class Game:
                 piece,to = moves[i][1],moves[i][2] 
                 to_coord = translate_square_coord(to)
                 try:
-                    self.players[turn].drop(piece,self.board,to_coord)
+                    self.players[turn].drop(piece,self.board,to_coord,self.players[turn^1])
                 except:
                     self.displayBoardState(turn,moves[i])
                     return
