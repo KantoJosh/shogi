@@ -29,3 +29,7 @@ check:
     in check either in player
     player will contain var holding king_loc
     call in check before turn pass in board- iterate thru board, and check if king loc is inside any piece
+
+
+# TODO
+ make possibleMoves into set

@@ -35,6 +35,21 @@ letter_map = {
         "e" : 4
     }
 
+number_map = {
+    0: "a",
+    1: "b",
+    2: "c",
+    3: "d",
+    4: "e"
+}
+
+def translate_letter_coord(coordinate):
+    x,y = coordinate # 1 0  ---> 0 = a ///// 1 == 1 ===> a1
+    letter = number_map[y]
+    number = x
+
+    return f"{letter}{number+1}"
+
 def translate_square_coord(coordinate):
     letter = coordinate[0]
     column = letter_map[letter]

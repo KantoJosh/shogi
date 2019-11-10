@@ -108,7 +108,10 @@ class Player():
             for j in range(board.BOARD_SIZE):
                 # not empty, enemy player, and possible moves contain self.king_loc
                 if board[(i,j)] != None and board[(i,j)].player != self.id and self.king_loc in type(board[(i,j)]).possibleMoves(board,(i,j)):
-                    return True 
+                    return True
+                # if board[(i,j)] != None and board[(i,j)].player != self.id:
+                #     if self.king_loc in type(board[(i,j)]).possibleMoves(board,(i,j)):
+                #         return True 
         return False
     
     def findEscapeMoves(self,board):

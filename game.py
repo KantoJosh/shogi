@@ -1,4 +1,4 @@
-from utils import parseTestCase,LOWER,UPPER,translate_square_coord
+from utils import parseTestCase,LOWER,UPPER,translate_square_coord,translate_letter_coord
 from board import Board
 from player import Player
 import sys
@@ -46,6 +46,9 @@ class Game:
         i = 0
         moves = [d.split(" ") for d in self.data['moves']]
         while(i < len(moves) and not GAME_OVER):
+            # perform check here
+            # if check,set flag and exit loop
+            CHECK = self.players[turn].check(self.board)
             #king_escape_moves = self.players[turn].check(board)
             if moves[i][0] == "move":
                 promote = (len(moves[i]) == 4 and moves[i][3] == "promote")
@@ -94,19 +97,18 @@ class Game:
         if TIE_GAME:
             print("Tie game.  Too many moves.")
             return
-        #if self.players[turn].check(self.board):
-        #    escape = self.players[turn ^ 1].findEscapeMoves(self.board)
 
-        # if CHECK:
-        #     escape = self.players[turn].findEscapeMoves(self.board)
-        #     if len(escape) == 0:
-        #         pass # checkmate msg
-        #     else:
-        #         if turn == LOWER:
-        #             print("lower",end = " ")
-        #         else:
-        #             print("UPPER",end =" ")
-
+        if self.players[turn ^ 1].check(self.board):
+            if turn == UPPER:
+                print("lower player is in check!")
+            else:
+                print("UPPER player is in check!")
+            escape = self.players[turn ^ 1].findEscapeMoves(self.board)
+            print("Available moves:")
+            for esc in escape:
+                king_coord = translate_letter_coord(self.players[turn ^ 1].king_loc)
+                letter_coord = translate_letter_coord(esc)
+                print(f"move {king_coord} {letter_coord}")
 
         if turn == LOWER:
             print("UPPER>")
