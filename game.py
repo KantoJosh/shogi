@@ -103,9 +103,8 @@ class Game:
         if self.players[turn ^ 1].check(self.board):
             #escape = sorted(self.players[turn ^ 1].findEscapeMoves(self.board),key = lambda coord: (coord[1],coord[0]))
             escape = sorted(self.players[turn ^ 1].checkmate(self.board),key = lambda coord: (coord[1],coord[0]))
-            # print("esc",escape)
-            if escape == []:
-                if turn == LOWER:
+            if len(escape) == 0:
+                if (turn^1) == LOWER:
                     print("UPPER player wins.  Checkmate.")
                 else:
                     print("lower player wins.  Checkmate.")
