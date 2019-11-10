@@ -33,3 +33,12 @@ check:
 
 # TODO
  make possibleMoves into set
+
+ # checkmate
+ get all possible moves of king
+    iterate through each move and do that move and check if king is still in check
+    if it is, remove that move from possible moves
+    else
+    keep in list
+    then undo the move (either by creating a copy of the old board every time, or undoing the move)
+ if that list is empty, you're in checkmate

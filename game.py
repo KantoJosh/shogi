@@ -48,7 +48,9 @@ class Game:
         while(i < len(moves) and not GAME_OVER):
             # perform check here
             # if check,set flag and exit loop
-            CHECK = self.players[turn].check(self.board)
+            #CHECK = self.players[turn].check(self.board)
+            #if CHECK and len(self.players[turn].findEscapeMoves(self.board)) == 0:
+
             #king_escape_moves = self.players[turn].check(board)
             if moves[i][0] == "move":
                 promote = (len(moves[i]) == 4 and moves[i][3] == "promote")
@@ -99,11 +101,21 @@ class Game:
             return
 
         if self.players[turn ^ 1].check(self.board):
-            if turn == UPPER:
-                print("lower player is in check!")
+            #escape = sorted(self.players[turn ^ 1].findEscapeMoves(self.board),key = lambda coord: (coord[1],coord[0]))
+            escape = sorted(self.players[turn ^ 1].checkmate(self.board),key = lambda coord: (coord[1],coord[0]))
+            # print("esc",escape)
+            if escape == []:
+                if turn == LOWER:
+                    print("UPPER player wins.  Checkmate.")
+                else:
+                    print("lower player wins.  Checkmate.")
+                return 
             else:
-                print("UPPER player is in check!")
-            escape = self.players[turn ^ 1].findEscapeMoves(self.board)
+                if turn == UPPER:
+                    print("lower player is in check!")
+                else:
+                    print("UPPER player is in check!")
+
             print("Available moves:")
             for esc in escape:
                 king_coord = translate_letter_coord(self.players[turn ^ 1].king_loc)

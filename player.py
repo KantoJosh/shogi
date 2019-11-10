@@ -1,6 +1,7 @@
 from utils import translate_square_coord,LOWER,UPPER
 from piece import Piece
 from boxdrive import BoxDrive
+from copy import deepcopy
 # 
 
 class Player():
@@ -69,7 +70,7 @@ class Player():
         board[destination] = piece 
 
 
-    def move(self,source,destination,board,promote):  
+    def move(self,source,destination,board,promote,undo_king = True):  
         """Concerns with player's move: what they neec to do:
         1-move piece
         2- add to capttured set """      
@@ -93,7 +94,7 @@ class Player():
 
 
         source_piece.move(source,destination,board,promote)
-        if type(source_piece).__name__ == "BoxDrive":
+        if type(source_piece).__name__ == "BoxDrive" and undo_king:
             self.king_loc = destination
 
         if dest_piece != None:
@@ -103,28 +104,44 @@ class Player():
             # reduce number of pieces other user has
         self.moves += 1
     
-    def check(self,board):
+    def check(self,board,king_pos = None):
+        if king_pos == None:
+            king_pos = self.king_loc
         for i in range(board.BOARD_SIZE):
             for j in range(board.BOARD_SIZE):
                 # not empty, enemy player, and possible moves contain self.king_loc
-                if board[(i,j)] != None and board[(i,j)].player != self.id and self.king_loc in type(board[(i,j)]).possibleMoves(board,(i,j)):
+                if board[(i,j)] != None and board[(i,j)].player != self.id and king_pos in type(board[(i,j)]).possibleMoves(board,(i,j)):
                     return True
-                # if board[(i,j)] != None and board[(i,j)].player != self.id:
-                #     if self.king_loc in type(board[(i,j)]).possibleMoves(board,(i,j)):
-                #         return True 
         return False
     
     def findEscapeMoves(self,board):
-        king_moves  = BoxDrive.possibleMoves(board,self.king_loc) # list of tuples
+        king_moves  = set(BoxDrive.possibleMoves(board,self.king_loc)) # list of tuples
+
+        #print("KING",king_moves)
         for i in range(board.BOARD_SIZE):
             for j in range(board.BOARD_SIZE):
                 if board[(i,j)] != None and board[(i,j)].player != self.id:
                     opponent_moves = type(board[(i,j)]).possibleMoves(board,(i,j))
+                    #print("OPP",type(board[(i,j)]).__name__,opponent_moves)
                     bannedMoves = list(set(king_moves) & set(opponent_moves))
-                    for b in range(len(bannedMoves)):
-                        for k in range(len(king_moves)):
-                            if bannedMoves[b] == king_moves[k]:
-                                king_moves.pop(k)
-                                break
+                    for b in bannedMoves:
+                        if b in king_moves:
+                            king_moves.remove(b)
+                            break
         return king_moves
+
+
+
+    def checkmate(self,board):
+        king_moves  = set(BoxDrive.possibleMoves(board,self.king_loc)) # list of tuples
+        new_moves = set()
+        for move in king_moves:
+            board_copy = deepcopy(board)
+            self.move(self.king_loc,move,board_copy,False,False)
+            if not self.check(board_copy,move):
+                new_moves.add(move)
+        return new_moves
+
+
+
 
