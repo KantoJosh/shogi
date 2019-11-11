@@ -1,1 +1,1 @@
-python3 game.py -f
+python3 box_shogi.py -f
