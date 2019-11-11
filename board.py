@@ -25,20 +25,21 @@ class Board:
 
     def __init__(self):
         self._board = self._initEmptyBoard() # backend representation of board
-        #self.king_loc = None
 
     def _initEmptyBoard(self):
         # TODO: Initalize empty board
-        return [[None]*5 for _ in range(Board.BOARD_SIZE)]
+        return [[None]*Board.BOARD_SIZE for _ in range(Board.BOARD_SIZE)]
     
-    def _initStartBoard(self):
+    def initInteractiveBoard(self):
         self._board[4] = [BoxNote(4,0,UPPER),BoxGovernance(4,1,UPPER),BoxRelay(4,2,UPPER),BoxShield(4,3,UPPER),BoxDrive(4,4,UPPER)]
         self._board[0] = [BoxDrive(0,0,LOWER),BoxShield(0,1,LOWER),BoxRelay(0,2,LOWER),BoxGovernance(0,3,LOWER),BoxNote(0,4,LOWER)]
         self._board[1][0] = BoxPreview(1,0,LOWER)
         self._board[3][4] = BoxPreview(3,4,UPPER)
     
-    def _initBoardFromFile(self,data,lower,upper):
-        # place pieces onto board
+    def initBoardFromFile(self,data,lower,upper):
+        '''Initialize board and player contents from file '''
+
+        # add pieces to board
         for initialPiece in data['initialPieces']:
             row,col = translate_square_coord(initialPiece['position'])
             player = LOWER if initialPiece['piece'][-1].lower() == initialPiece['piece'][-1] else UPPER
@@ -53,6 +54,7 @@ class Board:
                piece.promote() # piece is promoted
             self._board[row][col] = piece 
         
+        # add pieces to captured set
         for piece in data['upperCaptures']:
             piece = self.letter_to_piece[piece.lower()](None,None,UPPER)
             upper.capture(piece)
@@ -61,16 +63,12 @@ class Board:
             piece = self.letter_to_piece[piece.lower()](None,None,LOWER) 
             lower.capture(piece)
     
-    def isEmpty(self,coordinate):
+    def isEmptyAt(self,coordinate):
+        '''Checks if position at board is empty'''
         return self[(coordinate[0],coordinate[1])] == None
 
     def __repr__(self):
         return self._stringifyBoard()
-
-    # def getPieceChar(self,piece):
-    #     if piece == None:
-    #         return ""
-    #     return Piece.PIECE_TO_LETTER[type(piece).__name__][piece.player]
 
     def _stringifyBoard(self):
         """
