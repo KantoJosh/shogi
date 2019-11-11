@@ -44,6 +44,7 @@ number_map = {
 }
 
 def translate_letter_coord(coordinate):
+    '''Translate matrix coordinate to board coordinate '''
     x,y = coordinate # 1 0  ---> 0 = a ///// 1 == 1 ===> a1
     letter = number_map[y]
     number = x
@@ -51,6 +52,7 @@ def translate_letter_coord(coordinate):
     return f"{letter}{number+1}"
 
 def translate_square_coord(coordinate):
+    '''Translate board coordinate to matrix coordinate '''
     letter = coordinate[0]
     column = letter_map[letter]
     row = abs(int(coordinate[1]) - 1)

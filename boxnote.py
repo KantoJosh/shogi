@@ -6,7 +6,8 @@ class BoxNote(Piece):
     def __init__(self,row,column,player):
         Piece.__init__(self,row,column,player)
     
-    def possibleMoves(board,position): # O(1)
+    @staticmethod
+    def possibleMoves(board,position): 
         if board[position].promoted:
             moves = BoxDrive.possibleMoves(board,position)
         else:

@@ -27,10 +27,11 @@ class Board:
         self._board = self._initEmptyBoard() # backend representation of board
 
     def _initEmptyBoard(self):
-        # TODO: Initalize empty board
+        '''Initalize empty board'''
         return [[None]*Board.BOARD_SIZE for _ in range(Board.BOARD_SIZE)]
     
     def initInteractiveBoard(self):
+        '''Initialize interactive board with default positions for shogi pieces'''
         self._board[4] = [BoxNote(4,0,UPPER),BoxGovernance(4,1,UPPER),BoxRelay(4,2,UPPER),BoxShield(4,3,UPPER),BoxDrive(4,4,UPPER)]
         self._board[0] = [BoxDrive(0,0,LOWER),BoxShield(0,1,LOWER),BoxRelay(0,2,LOWER),BoxGovernance(0,3,LOWER),BoxNote(0,4,LOWER)]
         self._board[1][0] = BoxPreview(1,0,LOWER)
@@ -62,6 +63,7 @@ class Board:
         for piece in data['lowerCaptures']:
             piece = self.letter_to_piece[piece.lower()](None,None,LOWER) 
             lower.capture(piece)
+            
     
     def isEmptyAt(self,coordinate):
         '''Checks if position at board is empty'''

@@ -6,6 +6,7 @@ class BoxPreview(Piece):
     def __init__(self,row,column,player):
         Piece.__init__(self,row,column,player)
     
+    @staticmethod
     def possibleMoves(board,position): 
         if board[position].promoted:
             return BoxShield.possibleMoves(board,position)

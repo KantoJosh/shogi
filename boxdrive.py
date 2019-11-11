@@ -5,6 +5,7 @@ class BoxDrive(Piece):
     def __init__(self,row,column,player):
         Piece.__init__(self,row,column,player)
     
+    @staticmethod
     def possibleMoves(board,position):
         x,y = position
         moves = {
