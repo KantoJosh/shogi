@@ -9,7 +9,7 @@ def main():
     # create both players here
     players = [Player(),Player()] # 0 is lower, 1 is upper
     board = Board() # backend board
-    board._initStartBoard()
+    board.initInteractiveBoard()
     turn = LOWER
     while(not GAME_OVER):
 
