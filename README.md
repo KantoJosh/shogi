@@ -1,5 +1,3 @@
-# box-take-home
-
 # notes 
 how to detect if you are in check:
     - during oponnent's turn check if any of the possible moves 
